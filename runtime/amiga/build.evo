@@ -1,5 +1,5 @@
 ; EduAmigaE-Game Amiga-side E-VO build script
-.key SOURCE/A
+.key SOURCE/A,OUTPUT/A
 .bra {
 .ket }
 
@@ -19,20 +19,16 @@ If WARN
   Quit 20
 EndIf
 
-; E-VO writes an executable using the source basename without .e.
-Set OUTNAME `FilePart "{SOURCE}"`
-Set OUTNAME `Echo "$OUTNAME" | Sed "s/.e$//"`
-
-If NOT EXISTS "$OUTNAME"
-  Echo "ERROR: compiler returned success but output is missing"
+If NOT EXISTS "{OUTPUT}"
+  Echo "ERROR: compiler returned success but output is missing: {OUTPUT}"
   Quit 21
 EndIf
 
-Copy "$OUTNAME" "EDUOUT:$OUTNAME" QUIET
+Copy "{OUTPUT}" "EDUOUT:{OUTPUT}" QUIET
 If WARN
   Echo "ERROR: failed to copy output to EDUOUT:"
   Quit 22
 EndIf
 
-Echo "Built EDUOUT:$OUTNAME"
+Echo "Built EDUOUT:{OUTPUT}"
 Quit 0
