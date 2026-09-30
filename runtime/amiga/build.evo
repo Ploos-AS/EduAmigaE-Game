@@ -1,32 +1,38 @@
-; EduAmigaE-Game Amiga-side build script
-; Invoked inside AmigaDOS by the runtime adapter.
-;
-; Expected assigns:
-;   E:       E-VO installation
-;   EDUSRC: staged course source
-;   EDUOUT: output directory
-
+; EduAmigaE-Game Amiga-side E-VO build script
 .key SOURCE/A
 .bra {
 .ket }
 
-failat 20
+FailAt 20
 
-if not exists "EDUSRC:{SOURCE}"
-  echo "ERROR: source not found: EDUSRC:{SOURCE}"
-  quit 10
-endif
+If NOT EXISTS "EDUSRC:{SOURCE}"
+  Echo "ERROR: source not found: EDUSRC:{SOURCE}"
+  Quit 10
+EndIf
 
-echo "Compiling EDUSRC:{SOURCE}"
+CD EDUSRC:
+Echo "Compiling {SOURCE} with E-VO"
+EVO "{SOURCE}" NOPROGRESS
 
-; Keep the compiler invocation in one place. Runtime qualification may adjust
-; arguments as E-VO CLI behaviour is verified against V3.9.4.
-E:E-VO "EDUSRC:{SOURCE}"
+If WARN
+  Echo "ERROR: E-VO compilation failed"
+  Quit 20
+EndIf
 
-if warn
-  echo "ERROR: E-VO compilation failed"
-  quit 20
-endif
+; E-VO writes an executable using the source basename without .e.
+Set OUTNAME `FilePart "{SOURCE}"`
+Set OUTNAME `Echo "$OUTNAME" | Sed "s/.e$//"`
 
-echo "E-VO returned success"
-quit 0
+If NOT EXISTS "$OUTNAME"
+  Echo "ERROR: compiler returned success but output is missing"
+  Quit 21
+EndIf
+
+Copy "$OUTNAME" "EDUOUT:$OUTNAME" QUIET
+If WARN
+  Echo "ERROR: failed to copy output to EDUOUT:"
+  Quit 22
+EndIf
+
+Echo "Built EDUOUT:$OUTNAME"
+Quit 0
