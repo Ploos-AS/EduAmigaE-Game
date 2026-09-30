@@ -36,11 +36,19 @@ EDUOUT:    resulting executables and status markers
 EMODULES:  E-VO Modules/
 ```
 
-The Amiga-side script changes to `EDUSRC:`, invokes E-VO, verifies that the expected executable exists, and copies it to `EDUOUT:`.
+The host writes both `BUILD.SOURCE` and `BUILD.OUTPUT`. The Amiga-side script receives both names explicitly, changes to `EDUSRC:`, invokes E-VO, verifies that the expected executable exists, and copies it to `EDUOUT:`. Output-name derivation is intentionally kept out of AmigaDOS.
+
+## Build OS versus target OS
+
+The compiler runtime and the game target are deliberately separate contracts.
+
+Q2/Q3 uses AmigaOS 2.04 or newer as the reference **build OS**. This gives the unattended runner the modern AmigaDOS command syntax used by the E-VO 3.9.4 CLI and keeps the build harness small and deterministic. This does not raise the generated game's CPU or chipset baseline.
+
+The produced executable is qualified separately as a **target runtime** artifact. The first target remains A500-class 68000/OCS/PAL. A later runtime matrix will include an AmigaOS 1.x profile so that build-host convenience cannot silently become a game requirement.
 
 ## Runtime policy
 
-Initial qualification target:
+Initial target qualification:
 
 - A500-class machine
 - Motorola 68000
