@@ -11,12 +11,16 @@ mkdir -p "$tmp/system" "$tmp/evo"
 EDUAMIGAE_KICKSTART="$tmp/kick.rom" \
 EDUAMIGAE_SYSTEM="$tmp/system" \
 EDUAMIGAE_EVO_ROOT="$tmp/evo" \
-  "$root/runtime/fs-uae/make-config.sh" >/dev/null
+  sh "$root/runtime/fs-uae/make-config.sh" >/dev/null
 
 cfg="$root/build/eduamigae-game.fs-uae"
 grep -q '^amiga_model = A500$' "$cfg"
 grep -q "^kickstart_file = $tmp/kick.rom$" "$cfg"
-grep -q "^hard_drive_1 = $root/build/src$" "$cfg"
-grep -q "^hard_drive_2 = $root/build/out$" "$cfg"
+grep -q "^hard_drive_0 = $root/build/boot$" "$cfg"
+grep -q "^hard_drive_1 = $tmp/system$" "$cfg"
+grep -q "^hard_drive_2 = $root/build/src$" "$cfg"
+grep -q "^hard_drive_3 = $root/build/out$" "$cfg"
+grep -q "^hard_drive_4 = $root/runtime/amiga$" "$cfg"
+grep -q "^hard_drive_5 = $tmp/evo$" "$cfg"
 
 echo "FS-UAE config tests: PASS"
