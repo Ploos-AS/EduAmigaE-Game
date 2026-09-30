@@ -23,4 +23,9 @@ grep -q "^hard_drive_3 = $root/build/out$" "$cfg"
 grep -q "^hard_drive_4 = $root/runtime/amiga$" "$cfg"
 grep -q "^hard_drive_5 = $tmp/evo$" "$cfg"
 
+for pair in "0 BOOT" "1 SYSTEM" "2 SRC" "3 OUT" "4 RUNTIME" "5 EVO"; do
+  set -- $pair
+  grep -q "^hard_drive_$1_label = $2$" "$cfg"
+done
+
 echo "FS-UAE config tests: PASS"
