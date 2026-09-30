@@ -1,6 +1,7 @@
 #!/bin/sh
 set -eu
 
+root="$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)"
 cmd="${1:-help}"
 shift || true
 
@@ -11,8 +12,9 @@ EduAmigaE-Game build helper
 
 Commands:
   doctor              inspect host prerequisites
-  stage SOURCE.e      stage E source for the Amiga build runner
-  build SOURCE.e      build through a configured Amiga runner
+  stage SOURCE.e      stage E source
+  build SOURCE.e      build and verify Amiga Hunk output
+  verify FILE         verify an Amiga Hunk executable
 
 Environment:
   EDUAMIGAE_RUNNER    command implementing the Amiga build-runner contract
@@ -21,6 +23,7 @@ EOF
   doctor)
     command -v sha256sum >/dev/null
     command -v git >/dev/null
+    command -v python3 >/dev/null
     echo "host tools: ok"
     if [ -n "${EDUAMIGAE_RUNNER:-}" ]; then
       echo "Amiga runner: configured ($EDUAMIGAE_RUNNER)"
@@ -31,19 +34,36 @@ EOF
   stage)
     src="${1:?usage: eduamigae-game stage SOURCE.e}"
     test -f "$src"
-    mkdir -p build/src build/out
-    cp "$src" build/src/
+    mkdir -p "$root/build/src" "$root/build/out"
+    cp "$src" "$root/build/src/"
     echo "staged: build/src/$(basename "$src")"
+    ;;
+  verify)
+    file="${1:?usage: eduamigae-game verify FILE}"
+    python3 "$root/tools/check-amiga-hunk.py" "$file"
     ;;
   build)
     src="${1:?usage: eduamigae-game build SOURCE.e}"
+    base="$(basename "$src")"
+    out="${base%.e}"
+
     "$0" stage "$src"
+    rm -f "$root/build/out/$out"
+
     if [ -z "${EDUAMIGAE_RUNNER:-}" ]; then
       echo "error: EDUAMIGAE_RUNNER is not configured" >&2
-      echo "The E-VO compiler runs on the Amiga side of the build boundary." >&2
       exit 3
     fi
-    exec sh -c "$EDUAMIGAE_RUNNER" -- "$(basename "$src")"
+
+    sh -c "$EDUAMIGAE_RUNNER" -- "$base"
+
+    test -f "$root/build/out/$out" || {
+      echo "error: expected output missing: build/out/$out" >&2
+      exit 4
+    }
+
+    "$0" verify "$root/build/out/$out"
+    echo "build verified: build/out/$out"
     ;;
   *)
     echo "unknown command: $cmd" >&2
