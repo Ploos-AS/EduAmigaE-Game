@@ -2,6 +2,19 @@
 set -eu
 
 root="$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)"
+
+stage_source() {
+  src="$1"
+  test -f "$src"
+  mkdir -p "$root/build/src" "$root/build/out"
+  cp "$src" "$root/build/src/"
+  echo "staged: build/src/$(basename "$src")"
+}
+
+verify_hunk() {
+  python3 "$root/tools/check-amiga-hunk.py" "$1"
+}
+
 cmd="${1:-help}"
 shift || true
 
@@ -33,21 +46,18 @@ EOF
     ;;
   stage)
     src="${1:?usage: eduamigae-game stage SOURCE.e}"
-    test -f "$src"
-    mkdir -p "$root/build/src" "$root/build/out"
-    cp "$src" "$root/build/src/"
-    echo "staged: build/src/$(basename "$src")"
+    stage_source "$src"
     ;;
   verify)
     file="${1:?usage: eduamigae-game verify FILE}"
-    python3 "$root/tools/check-amiga-hunk.py" "$file"
+    verify_hunk "$file"
     ;;
   build)
     src="${1:?usage: eduamigae-game build SOURCE.e}"
     base="$(basename "$src")"
     out="${base%.e}"
 
-    "$0" stage "$src"
+    stage_source "$src"
     rm -f "$root/build/out/$out"
 
     if [ -z "${EDUAMIGAE_RUNNER:-}" ]; then
@@ -62,7 +72,7 @@ EOF
       exit 4
     }
 
-    "$0" verify "$root/build/out/$out"
+    verify_hunk "$root/build/out/$out"
     echo "build verified: build/out/$out"
     ;;
   *)
