@@ -1,0 +1,12 @@
+# EduAmigaE-Game toolchain lock
+#
+# M1 policy decision:
+compiler=E-VO
+upstream=aminet:dev/e/evo.lha
+target=m68k-amigaos
+baseline_cpu=68000
+#
+# Exact version, archive URL and SHA-256 are intentionally left unset until
+# the current upstream archive is fetched and hashed in a reproducible build.
+version=UNPINNED
+sha256=UNPINNED
