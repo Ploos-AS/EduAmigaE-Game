@@ -8,8 +8,14 @@ fullscreen = 0
 # Generated course boot volume comes first so its S/Startup-Sequence owns the
 # unattended build. The student's AmigaOS tree remains separate and untouched.
 hard_drive_0 = @BOOT@
+hard_drive_0_label = BOOT
 hard_drive_1 = @SYSTEM@
+hard_drive_1_label = SYSTEM
 hard_drive_2 = @SRC@
+hard_drive_2_label = SRC
 hard_drive_3 = @OUT@
+hard_drive_3_label = OUT
 hard_drive_4 = @RUNTIME@
+hard_drive_4_label = RUNTIME
 hard_drive_5 = @EVO@
+hard_drive_5_label = EVO
