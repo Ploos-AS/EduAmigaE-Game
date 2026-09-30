@@ -1,12 +1,4 @@
 ; EduAmigaE-Game generated build boot
-;
-; Expected volumes:
-;   SYSTEM:  student supplied AmigaOS system
-;   SRC:     staged E source
-;   OUT:     build output
-;   RUNTIME: course Amiga-side scripts
-;   EVO:     E-VO distribution
-
 FailAt 20
 
 Assign C: SYSTEM:C
@@ -21,8 +13,14 @@ Assign EDUOUT: OUT:
 Assign EDURUNTIME: RUNTIME:
 Assign E: EVO:
 
-Echo "EduAmigaE-Game unattended build"
-Execute EDURUNTIME:build.evo "hello.e"
+If NOT EXISTS "EDUSRC:BUILD.SOURCE"
+  Echo "missing BUILD.SOURCE" > EDUOUT:BUILD.FAIL
+  EndCLI >NIL:
+EndIf
+
+Set SOURCE `Type EDUSRC:BUILD.SOURCE`
+Echo "EduAmigaE-Game: building $SOURCE"
+Execute EDURUNTIME:build.evo "$SOURCE"
 
 If WARN
   Echo "FAIL" > EDUOUT:BUILD.FAIL
