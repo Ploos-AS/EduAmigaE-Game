@@ -1,12 +1,10 @@
 # EduAmigaE-Game toolchain lock
-#
-# M1 policy decision:
 compiler=E-VO
-upstream=aminet:dev/e/evo.lha
+version=3.9.4
+release_tag=V3.9.4
+upstream=https://github.com/dmcoles/EVO
+archive=evo394.lha
+archive_url=https://github.com/dmcoles/EVO/releases/download/V3.9.4/evo394.lha
+sha256=a7ebb0b8de6261d63e9416f9a385ee1973a67a84228a1370b4ad6dcd4fe21230
 target=m68k-amigaos
 baseline_cpu=68000
-#
-# Exact version, archive URL and SHA-256 are intentionally left unset until
-# the current upstream archive is fetched and hashed in a reproducible build.
-version=UNPINNED
-sha256=UNPINNED
