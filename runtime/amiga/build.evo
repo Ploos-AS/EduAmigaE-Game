@@ -1,0 +1,32 @@
+; EduAmigaE-Game Amiga-side build script
+; Invoked inside AmigaDOS by the runtime adapter.
+;
+; Expected assigns:
+;   E:       E-VO installation
+;   EDUSRC: staged course source
+;   EDUOUT: output directory
+
+.key SOURCE/A
+.bra {
+.ket }
+
+failat 20
+
+if not exists "EDUSRC:{SOURCE}"
+  echo "ERROR: source not found: EDUSRC:{SOURCE}"
+  quit 10
+endif
+
+echo "Compiling EDUSRC:{SOURCE}"
+
+; Keep the compiler invocation in one place. Runtime qualification may adjust
+; arguments as E-VO CLI behaviour is verified against V3.9.4.
+E:E-VO "EDUSRC:{SOURCE}"
+
+if warn
+  echo "ERROR: E-VO compilation failed"
+  quit 20
+endif
+
+echo "E-VO returned success"
+quit 0
