@@ -1,0 +1,33 @@
+; EduAmigaE-Game generated build boot
+;
+; Expected volumes:
+;   SYSTEM:  student supplied AmigaOS system
+;   SRC:     staged E source
+;   OUT:     build output
+;   RUNTIME: course Amiga-side scripts
+;   EVO:     E-VO distribution
+
+FailAt 20
+
+Assign C: SYSTEM:C
+Assign L: SYSTEM:L
+Assign LIBS: SYSTEM:LIBS
+Assign DEVS: SYSTEM:DEVS
+Assign S: SYSTEM:S
+Path C: ADD
+
+Assign EDUSRC: SRC:
+Assign EDUOUT: OUT:
+Assign EDURUNTIME: RUNTIME:
+Assign E: EVO:
+
+Echo "EduAmigaE-Game unattended build"
+Execute EDURUNTIME:build.evo "hello.e"
+
+If WARN
+  Echo "FAIL" > EDUOUT:BUILD.FAIL
+Else
+  Echo "PASS" > EDUOUT:BUILD.PASS
+EndIf
+
+EndCLI >NIL:
