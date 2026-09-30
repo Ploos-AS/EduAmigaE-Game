@@ -1,0 +1,52 @@
+#!/bin/sh
+set -eu
+
+cmd="${1:-help}"
+shift || true
+
+case "$cmd" in
+  help)
+    cat <<'EOF'
+EduAmigaE-Game build helper
+
+Commands:
+  doctor              inspect host prerequisites
+  stage SOURCE.e      stage E source for the Amiga build runner
+  build SOURCE.e      build through a configured Amiga runner
+
+Environment:
+  EDUAMIGAE_RUNNER    command implementing the Amiga build-runner contract
+EOF
+    ;;
+  doctor)
+    command -v sha256sum >/dev/null
+    command -v git >/dev/null
+    echo "host tools: ok"
+    if [ -n "${EDUAMIGAE_RUNNER:-}" ]; then
+      echo "Amiga runner: configured ($EDUAMIGAE_RUNNER)"
+    else
+      echo "Amiga runner: not configured"
+    fi
+    ;;
+  stage)
+    src="${1:?usage: eduamigae-game stage SOURCE.e}"
+    test -f "$src"
+    mkdir -p build/src build/out
+    cp "$src" build/src/
+    echo "staged: build/src/$(basename "$src")"
+    ;;
+  build)
+    src="${1:?usage: eduamigae-game build SOURCE.e}"
+    "$0" stage "$src"
+    if [ -z "${EDUAMIGAE_RUNNER:-}" ]; then
+      echo "error: EDUAMIGAE_RUNNER is not configured" >&2
+      echo "The E-VO compiler runs on the Amiga side of the build boundary." >&2
+      exit 3
+    fi
+    exec sh -c "$EDUAMIGAE_RUNNER" -- "$(basename "$src")"
+    ;;
+  *)
+    echo "unknown command: $cmd" >&2
+    exit 2
+    ;;
+esac
