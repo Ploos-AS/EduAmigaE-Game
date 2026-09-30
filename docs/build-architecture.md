@@ -1,55 +1,51 @@
 # Build architecture
 
-E-VO is an Amiga executable, not a native Linux cross-compiler.
-
-Upstream builds E-VO from `E-VO.S` with VASM using `-Fhunkexe`. The resulting compiler therefore belongs on the Amiga side of the build boundary.
+E-VO is an Amiga executable, not a native Linux cross-compiler. Upstream builds it as an Amiga Hunk executable.
 
 ## Two-layer student environment
 
-### 1. Host OCI
+The Debian host OCI handles reproducible downloads, checksums, staging and orchestration. An Amiga runtime executes E-VO and qualifies the produced program.
 
-The Debian student image provides:
+## Verified E-VO layout
 
-- reproducible downloads and checksum verification;
-- course scripts;
-- source validation;
-- staging of source and output directories;
-- orchestration of the Amiga runtime.
+For E-VO 3.9.4 the upstream installation model is:
 
-### 2. Amiga build runner
+- compiler: `Bin/EVO`
+- modules: `Modules/`
+- add `Bin` to the AmigaDOS `Path`
+- assign `EMODULES:` to `Modules/`
 
-The Amiga runtime provides:
+The compiler is invoked as `EVO source.e` and writes an executable using the source basename.
 
-- AmigaDOS;
-- E-VO;
-- E modules;
-- compilation of `.e` source;
-- execution/qualification of the resulting Amiga Hunk program.
-
-This separation is intentional. We do not pretend an Amiga executable can run natively inside the Linux container.
-
-## Runtime policy
-
-The course runner must eventually support a documented emulator/runtime path. The first qualification target is:
-
-- A500-class profile
-- 68000
-- OCS
-- PAL
-
-The runtime layer must not redistribute copyrighted Kickstart or AmigaOS files. Students provide legally obtained system files where required.
+The course runner mirrors that layout directly instead of running the interactive installer.
 
 ## Build contract
 
-The host side stages:
+Host staging:
 
 ```text
-/work/src
-/work/out
+build/src
+build/out
 ```
 
-The Amiga side sees equivalent source/output locations and runs E-VO there.
+Amiga assigns:
 
-A successful build must return the produced executable to `/work/out`.
+```text
+EDUSRC:    staged source
+EDUOUT:    resulting executables and status markers
+EMODULES:  E-VO Modules/
+```
 
-This contract allows the runtime implementation to evolve without changing every lesson.
+The Amiga-side script changes to `EDUSRC:`, invokes E-VO, verifies that the expected executable exists, and copies it to `EDUOUT:`.
+
+## Runtime policy
+
+Initial qualification target:
+
+- A500-class machine
+- Motorola 68000
+- OCS
+- PAL
+- 1 MiB practical baseline
+
+The project never redistributes Kickstart or AmigaOS. Students provide legally obtained system files where required.
