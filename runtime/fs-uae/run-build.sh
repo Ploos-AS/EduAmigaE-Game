@@ -22,11 +22,11 @@ test -f "$root/build/src/$src" || {
 rm -f "$root/build/out/BUILD.PASS" "$root/build/out/BUILD.FAIL" "$root/build/out/$out"
 printf '%s\n' "$src" > "$root/build/src/BUILD.SOURCE"
 
-cfg="$("$root/runtime/fs-uae/make-config.sh")"
+cfg="$(sh "$root/runtime/fs-uae/make-config.sh")"
 echo "starting FS-UAE build runner for $src"
 fs-uae "$cfg"
 
-"$root/runtime/fs-uae/check-result.sh"
+sh "$root/runtime/fs-uae/check-result.sh"
 
 test -f "$root/build/out/$out" || {
   echo "error: Amiga reported PASS but output is missing: $out" >&2
