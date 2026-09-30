@@ -1,0 +1,9 @@
+*.info
+*.o
+*.obj
+*.exe
+*.adf
+*.hdf
+build/
+dist/
+.DS_Store
