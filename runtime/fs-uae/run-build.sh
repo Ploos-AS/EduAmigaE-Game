@@ -2,31 +2,32 @@
 set -eu
 
 src="${1:?usage: run-build.sh SOURCE.e}"
+root="$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)"
 
 : "${EDUAMIGAE_KICKSTART:?set EDUAMIGAE_KICKSTART to your legally obtained Kickstart ROM}"
-: "${EDUAMIGAE_SYSTEM:?set EDUAMIGAE_SYSTEM to your Amiga system directory or image}"
+: "${EDUAMIGAE_SYSTEM:?set EDUAMIGAE_SYSTEM to your Amiga system directory}"
+: "${EDUAMIGAE_EVO_ROOT:?set EDUAMIGAE_EVO_ROOT to the extracted E-VO distribution}"
 
 command -v fs-uae >/dev/null 2>&1 || {
   echo "error: fs-uae not found" >&2
   exit 127
 }
 
-test -f "build/src/$src" || {
+test -f "$root/build/src/$src" || {
   echo "error: staged source not found: build/src/$src" >&2
   exit 2
 }
 
-mkdir -p build/out
+rm -f "$root/build/out/BUILD.PASS" "$root/build/out/BUILD.FAIL"
+printf '%s\n' "$src" > "$root/build/src/BUILD.SOURCE"
 
-echo "FS-UAE runner scaffold"
-echo "source:    build/src/$src"
-echo "output:    build/out"
-echo "Kickstart: user supplied"
-echo "System:    user supplied"
+cfg="$("$root/runtime/fs-uae/make-config.sh")"
 
-# M1 qualification gate:
-# We intentionally stop before inventing FS-UAE CLI/config semantics for
-# unattended AmigaDOS execution. The next runtime qualification step will pin
-# a tested FS-UAE configuration and boot command.
-echo "error: unattended FS-UAE boot/AmigaDOS invocation not qualified yet" >&2
-exit 4
+echo "starting FS-UAE build runner for $src"
+echo "config: $cfg"
+
+# Q2 still requires runtime evidence before this invocation is declared
+# qualified. The command itself is now explicit and reviewable.
+fs-uae "$cfg"
+
+"$root/runtime/fs-uae/check-result.sh"
