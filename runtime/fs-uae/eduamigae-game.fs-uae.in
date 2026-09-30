@@ -1,0 +1,16 @@
+[fs-uae]
+amiga_model = A500
+kickstart_file = @KICKSTART@
+chip_memory = 512
+slow_memory = 512
+fullscreen = 0
+
+# Student-supplied bootable Amiga system directory.
+hard_drive_0 = @SYSTEM@
+
+# Course staging directories. These are host directories exposed as Amiga
+# hard drives; exact Amiga volume names are established by the system setup.
+hard_drive_1 = @SRC@
+hard_drive_2 = @OUT@
+hard_drive_3 = @RUNTIME@
+hard_drive_4 = @EVO@
