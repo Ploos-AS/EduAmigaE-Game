@@ -10,6 +10,7 @@ template="$root/runtime/fs-uae/eduamigae-game.fs-uae.in"
 out="$root/build/eduamigae-game.fs-uae"
 
 mkdir -p "$root/build/src" "$root/build/out"
+"$root/runtime/fs-uae/prepare-boot.sh" >/dev/null
 
 for p in "$EDUAMIGAE_KICKSTART" "$EDUAMIGAE_SYSTEM" "$EDUAMIGAE_EVO_ROOT"; do
   test -e "$p" || { echo "missing path: $p" >&2; exit 2; }
@@ -19,6 +20,7 @@ esc() { printf '%s' "$1" | sed 's/[&|]/\\&/g'; }
 
 sed \
   -e "s|@KICKSTART@|$(esc "$EDUAMIGAE_KICKSTART")|g" \
+  -e "s|@BOOT@|$(esc "$root/build/boot")|g" \
   -e "s|@SYSTEM@|$(esc "$EDUAMIGAE_SYSTEM")|g" \
   -e "s|@SRC@|$(esc "$root/build/src")|g" \
   -e "s|@OUT@|$(esc "$root/build/out")|g" \
