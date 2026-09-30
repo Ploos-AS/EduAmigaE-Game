@@ -1,0 +1,27 @@
+name: Host CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  host-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Host qualification tests
+        run: make test
+
+      - name: Student OCI build
+        run: make student-image
+
+      - name: Student OCI doctor
+        run: docker run --rm eduamigae-game:dev doctor
