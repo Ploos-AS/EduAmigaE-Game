@@ -1,67 +1,80 @@
 /* EduAmigaE-Game: Mini Pong deterministic game core.
  *
- * No hardware reads and no rendering live here. A platform adapter fills the
- * logical input values; a renderer observes the game state.
+ * Pure state/update module: no hardware reads, rendering, timing or OS calls.
  */
+OPT MODULE
+OPT EXPORT
 
-DEF running=TRUE
-DEF playerY=100
-DEF ballX=160
-DEF ballY=100
-DEF ballVX=1
-DEF ballVY=1
-DEF score=0
-DEF inputUp=FALSE
-DEF inputDown=FALSE
-DEF inputQuit=FALSE
+OBJECT pongstate
+  running:LONG
+  playerY:LONG
+  ballX:LONG
+  ballY:LONG
+  ballVX:LONG
+  ballVY:LONG
+  score:LONG
+  inputUp:LONG
+  inputDown:LONG
+  inputQuit:LONG
+ENDOBJECT
 
-PROC updateGame()
-  IF inputUp THEN playerY:=playerY-2
-  IF inputDown THEN playerY:=playerY+2
+PROC resetGame(s:PTR TO pongstate)
+  s.running:=TRUE
+  s.playerY:=100
+  s.ballX:=160
+  s.ballY:=100
+  s.ballVX:=1
+  s.ballVY:=1
+  s.score:=0
+  s.inputUp:=FALSE
+  s.inputDown:=FALSE
+  s.inputQuit:=FALSE
+ENDPROC
 
-  IF playerY<0 THEN playerY:=0
-  IF playerY>175 THEN playerY:=175
+PROC updateGame(s:PTR TO pongstate)
+  IF s.inputUp THEN s.playerY:=s.playerY-2
+  IF s.inputDown THEN s.playerY:=s.playerY+2
 
-  ballX:=ballX+ballVX
-  ballY:=ballY+ballVY
+  IF s.playerY<0 THEN s.playerY:=0
+  IF s.playerY>175 THEN s.playerY:=175
 
-  IF ballY<=0
-    ballY:=0
-    ballVY:=1
+  s.ballX:=s.ballX+s.ballVX
+  s.ballY:=s.ballY+s.ballVY
+
+  IF s.ballY<=0
+    s.ballY:=0
+    s.ballVY:=1
   ENDIF
-  IF ballY>=199
-    ballY:=199
-    ballVY:=-1
+  IF s.ballY>=199
+    s.ballY:=199
+    s.ballVY:=-1
   ENDIF
 
-  /* Logical paddle: x=8..15, y=playerY..playerY+24. */
-  IF ballVX<0
-    IF ballX<=15
-      IF ballX>=8
-        IF ballY>=playerY
-          IF ballY<=playerY+24
-            ballX:=16
-            ballVX:=1
-            score:=score+1
+  IF s.ballVX<0
+    IF s.ballX<=15
+      IF s.ballX>=8
+        IF s.ballY>=s.playerY
+          IF s.ballY<=s.playerY+24
+            s.ballX:=16
+            s.ballVX:=1
+            s.score:=s.score+1
           ENDIF
         ENDIF
       ENDIF
     ENDIF
   ENDIF
 
-  /* Missing the left paddle restarts the ball state. */
-  IF ballX<0
-    ballX:=160
-    ballY:=100
-    ballVX:=1
-    ballVY:=1
+  IF s.ballX<0
+    s.ballX:=160
+    s.ballY:=100
+    s.ballVX:=1
+    s.ballVY:=1
   ENDIF
 
-  /* Right wall stands in for the second side during M1. */
-  IF ballX>=319
-    ballX:=319
-    ballVX:=-1
+  IF s.ballX>=319
+    s.ballX:=319
+    s.ballVX:=-1
   ENDIF
 
-  IF inputQuit THEN running:=FALSE
+  IF s.inputQuit THEN s.running:=FALSE
 ENDPROC
