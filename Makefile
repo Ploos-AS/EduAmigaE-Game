@@ -1,4 +1,4 @@
-.PHONY: help student-image student-doctor test test-host q3 q3-target-1x
+.PHONY: help student-image student-doctor test test-host q3 q3-target-1x q3-target-a500 q3-target-a1200
 
 help:
 	@echo "EduAmigaE-Game"
@@ -6,7 +6,9 @@ help:
 	@echo "  make student-doctor  Check its base tools"
 	@echo "  make test            Run host-side tests"
 	@echo "  make q3              Build Q3 smoke fixture through configured runner"
-	@echo "  make q3-target-1x    Check Q3 artifact against the mandatory 1.x target gate"
+	@echo "  make q3-target-a500  Check Q3 artifact against A500/1.x target gate"
+	@echo "  make q3-target-a1200 Check Q3 artifact against A1200/3.x target gate"
+	@echo "  make q3-target-1x    Legacy alias for A500/1.x target gate"
 
 student-image:
 	docker build -f student-oci/Dockerfile -t eduamigae-game:dev .
@@ -28,3 +30,9 @@ q3:
 
 q3-target-1x:
 	sh runtime/fs-uae/qualify-target-1x.sh build/out/q3-smoke
+
+q3-target-a500:
+	sh runtime/fs-uae/qualify-target.sh a500-1x build/out/q3-smoke
+
+q3-target-a1200:
+	sh runtime/fs-uae/qualify-target.sh a1200-3x build/out/q3-smoke
