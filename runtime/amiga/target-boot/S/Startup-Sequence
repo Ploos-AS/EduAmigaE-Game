@@ -1,0 +1,23 @@
+; EduAmigaE-Game target qualification boot
+FailAt 20
+Assign C: SYSTEM:C
+Assign L: SYSTEM:L
+Assign LIBS: SYSTEM:LIBS
+Assign DEVS: SYSTEM:DEVS
+Path C: ADD
+
+If NOT EXISTS "TEST:RUN.TARGET"
+  Echo "missing RUN.TARGET" > RESULT:RUN.FAIL
+  EndCLI >NIL:
+EndIf
+
+Set TARGET `Type TEST:RUN.TARGET`
+Echo "EduAmigaE-Game: running $TARGET"
+TEST:$TARGET
+
+If WARN
+  Echo "FAIL" > RESULT:RUN.FAIL
+Else
+  Echo "PASS" > RESULT:RUN.PASS
+EndIf
+EndCLI >NIL:
