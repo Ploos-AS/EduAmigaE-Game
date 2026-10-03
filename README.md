@@ -19,6 +19,7 @@ Initial target:
 - OCS
 - PAL
 - Motorola 68000
+- AmigaOS/Kickstart 1.x compatibility for game executables
 - 1 MiB as the practical course baseline where appropriate
 
 Later modules may introduce ECS, AGA and faster CPUs, but the foundational course must remain useful on a classic A500-class machine.
