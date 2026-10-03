@@ -29,7 +29,7 @@ test-host:
 	sh tests/test-target-runner.sh
 
 q3:
-	EDUAMIGAE_RUNNER='runtime/fs-uae/run-build.sh "$$1"' tools/eduamigae-game build tests/fixtures/q3-smoke.e
+	EDUAMIGAE_RUNNER=runtime/fs-uae/run-build.sh tools/eduamigae-game build tests/fixtures/q3-smoke.e
 
 q3-target-1x:
 	sh runtime/fs-uae/qualify-target-1x.sh build/out/q3-smoke
