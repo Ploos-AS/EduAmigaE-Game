@@ -50,6 +50,12 @@ The adapter only **reads** the direction and fire inputs. It does not reconfigur
 
 Direct custom-chip/CIA access is intentional in this low-level game course, but it must remain isolated so a later OS-friendly or test adapter can implement the same logical contract.
 
+## Code
+
+See `examples/classic-joystick/joystick.e`. The adapter uses E-VO inline 68000 assembly for the two hardware reads. `JOY1DAT` is deliberately read with `MOVE.W` and CIA-A PRA with `MOVE.B`; using a generic 32-bit peek for `JOY1DAT` would also touch the following custom-register address and would not model the documented 16-bit register access correctly.
+
+The example is source-reviewed against the E-VO inline-assembler syntax and hardware register contract. It is not yet marked runtime-qualified on a real A500/1.x target.
+
 ## Exercise
 
 1. Sample the joystick once per game tick.
