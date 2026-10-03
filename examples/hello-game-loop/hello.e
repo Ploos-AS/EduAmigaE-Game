@@ -1,9 +1,8 @@
-OPT OSVERSION=37
-
 /* EduAmigaE-Game: smallest visible game-loop state example.
  *
  * This intentionally keeps hardware rendering out of lesson 1.
  * The state transitions are the lesson.
+ * This foundational example must remain compatible with the A500/1.x profile.
  */
 
 DEF running=TRUE
