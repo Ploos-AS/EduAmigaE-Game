@@ -21,7 +21,11 @@ endwhile
 shutdown
 ```
 
-For the PAL baseline we target 50 updates per second. Later lessons will distinguish simulation rate, rendering rate and hardware synchronisation.
+For the PAL baseline we target 50 updates per second. At this stage that is a design model, not yet a promise of exact hardware timing: lesson 2 introduces the timing mechanism. Later lessons distinguish simulation rate, rendering rate and hardware synchronisation.
+
+## Target for foundational lessons
+
+Unless a lesson is explicitly marked A1200/AGA, foundational examples must remain compatible with the course minimum profile: A500, 68000, OCS, PAL, AmigaOS/Kickstart 1.x and the practical 1 MiB baseline. Do not introduce a newer OS API merely for convenience.
 
 ## First exercise
 
@@ -34,7 +38,7 @@ Create a program with:
 - one frame synchronisation point
 - a clean exit path
 
-Do not optimise yet. Keep each phase obvious enough to inspect and modify.
+Do not optimise yet. Keep each phase obvious enough to inspect and modify. The supplied `examples/hello-game-loop/hello.e` is intentionally non-playable: its purpose is to make the phases and state transitions visible before input and graphics are introduced.
 
 ## Think
 
