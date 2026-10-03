@@ -22,7 +22,8 @@ The course should avoid hiding important Amiga concepts behind a large framework
 - [Lesson 1 — The first game loop](01-first-game-loop.md)
 - [Lesson 2 — PAL timing and deterministic state](02-pal-timing-deterministic-state.md)
 - [Lesson 3 — Input as game state](03-input-as-state.md)
-- classic-Amiga keyboard and joystick adapter
+- [Lesson 4 — Classic Amiga joystick adapter](04-classic-amiga-joystick.md)
+- keyboard input adapter
 - screen coordinates and state
 
 ### Part II — Graphics
