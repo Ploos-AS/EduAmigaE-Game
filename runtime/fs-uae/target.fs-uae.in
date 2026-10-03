@@ -5,8 +5,11 @@ chip_memory = @CHIP@
 slow_memory = @SLOW@
 fullscreen = 0
 
-# Target qualification only: execute an already-built game artifact.
-hard_drive_0 = @SYSTEM@
-hard_drive_0_label = SYSTEM
-hard_drive_1 = @ARTIFACTS@
-hard_drive_1_label = TEST
+hard_drive_0 = @BOOT@
+hard_drive_0_label = BOOT
+hard_drive_1 = @SYSTEM@
+hard_drive_1_label = SYSTEM
+hard_drive_2 = @ARTIFACTS@
+hard_drive_2_label = TEST
+hard_drive_3 = @RESULT@
+hard_drive_3_label = RESULT
