@@ -34,6 +34,9 @@ Required evidence:
 - compile `examples/hello-game-loop/hello.e`;
 - resulting file is an Amiga Hunk executable;
 - execute it under the A500 profile;
-- no 68020+ requirement is introduced.
+- no 68020+ requirement is introduced;
+- execute the produced game artifact successfully on the AmigaOS/Kickstart 1.x A500 runtime profile.
+
+AmigaOS/Kickstart 1.x target compatibility is a required qualification gate for course games. The separate 2.04+ build environment may be used to run E-VO, but it does not define the game's minimum OS requirement.
 
 A runtime is not called qualified until these steps have been observed, rather than inferred from configuration syntax.
