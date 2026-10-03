@@ -19,8 +19,8 @@ The course should avoid hiding important Amiga concepts behind a large framework
 ### Part I — Foundations
 
 - toolchain and emulator
-- game loop
-- PAL timing
+- [Lesson 1 — The first game loop](01-first-game-loop.md)
+- [Lesson 2 — PAL timing and deterministic state](02-pal-timing-deterministic-state.md)
 - keyboard and joystick
 - screen coordinates and state
 
