@@ -1,106 +1,93 @@
 /* Mini Pong M1 deterministic scenario harness.
  *
- * This harness exercises the real updateGame() from core.e.
- * It is intended for the E-VO/Amiga qualification runner.
+ * Exercises the exported core module and its real updateGame().
  */
 
-MODULE 'core.e'
+MODULE 'core'
 
 DEF failures=0
-
-PROC resetState()
-  running:=TRUE
-  playerY:=100
-  ballX:=160
-  ballY:=100
-  ballVX:=1
-  ballVY:=1
-  score:=0
-  inputUp:=FALSE
-  inputDown:=FALSE
-  inputQuit:=FALSE
-ENDPROC
+DEF state:pongstate
 
 PROC check(value,expected)
   IF value<>expected THEN failures:=failures+1
 ENDPROC
 
 PROC main()
-  resetState()
-  inputUp:=TRUE
-  updateGame()
-  check(playerY,98)
+  resetGame(state)
+  state.inputUp:=TRUE
+  updateGame(state)
+  check(state.playerY,98)
 
-  resetState()
-  inputDown:=TRUE
-  updateGame()
-  check(playerY,102)
+  resetGame(state)
+  state.inputDown:=TRUE
+  updateGame(state)
+  check(state.playerY,102)
 
-  resetState()
-  playerY:=1
-  inputUp:=TRUE
-  updateGame()
-  check(playerY,0)
+  resetGame(state)
+  state.playerY:=1
+  state.inputUp:=TRUE
+  updateGame(state)
+  check(state.playerY,0)
 
-  resetState()
-  playerY:=174
-  inputDown:=TRUE
-  updateGame()
-  check(playerY,175)
+  resetGame(state)
+  state.playerY:=174
+  state.inputDown:=TRUE
+  updateGame(state)
+  check(state.playerY,175)
 
-  resetState()
-  ballX:=100
-  ballY:=0
-  ballVY:=-1
-  updateGame()
-  check(ballX,101)
-  check(ballY,0)
-  check(ballVY,1)
+  resetGame(state)
+  state.ballX:=100
+  state.ballY:=0
+  state.ballVY:=-1
+  updateGame(state)
+  check(state.ballX,101)
+  check(state.ballY,0)
+  check(state.ballVY,1)
 
-  resetState()
-  ballX:=100
-  ballY:=199
-  ballVY:=1
-  updateGame()
-  check(ballX,101)
-  check(ballY,199)
-  check(ballVY,-1)
+  resetGame(state)
+  state.ballX:=100
+  state.ballY:=199
+  state.ballVY:=1
+  updateGame(state)
+  check(state.ballX,101)
+  check(state.ballY,199)
+  check(state.ballVY,-1)
 
-  resetState()
-  playerY:=100
-  ballX:=16
-  ballY:=110
-  ballVX:=-1
-  score:=0
-  updateGame()
-  check(ballX,16)
-  check(ballY,111)
-  check(ballVX,1)
-  check(score,1)
+  resetGame(state)
+  state.playerY:=100
+  state.ballX:=16
+  state.ballY:=110
+  state.ballVX:=-1
+  state.score:=0
+  updateGame(state)
+  check(state.ballX,16)
+  check(state.ballY,111)
+  check(state.ballVX,1)
+  check(state.score,1)
 
-  resetState()
-  ballX:=0
-  ballY:=50
-  ballVX:=-1
-  updateGame()
-  check(ballX,160)
-  check(ballY,100)
-  check(ballVX,1)
-  check(ballVY,1)
+  resetGame(state)
+  state.ballX:=0
+  state.ballY:=50
+  state.ballVX:=-1
+  updateGame(state)
+  check(state.ballX,160)
+  check(state.ballY,100)
+  check(state.ballVX,1)
+  check(state.ballVY,1)
 
-  resetState()
-  ballX:=318
-  ballY:=100
-  ballVX:=1
-  updateGame()
-  check(ballX,319)
-  check(ballY,101)
-  check(ballVX,-1)
+  resetGame(state)
+  state.ballX:=318
+  state.ballY:=100
+  state.ballVX:=1
+  updateGame(state)
+  check(state.ballX,319)
+  check(state.ballY,101)
+  check(state.ballVX,-1)
 
-  resetState()
-  inputQuit:=TRUE
-  updateGame()
-  check(running,FALSE)
+  resetGame(state)
+  state.inputQuit:=TRUE
+  updateGame(state)
+  check(state.running,FALSE)
 
   IF failures=0
     WriteF('M1 PONG SCENARIOS PASS\n')
