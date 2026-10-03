@@ -44,17 +44,13 @@ The compiler runtime and the game target are deliberately separate contracts.
 
 Q2/Q3 uses AmigaOS 2.04 or newer as the reference **build OS**. This gives the unattended runner the modern AmigaDOS command syntax used by the E-VO 3.9.4 CLI and keeps the build harness small and deterministic. This does not raise the generated game's CPU or chipset baseline.
 
-The produced executable is qualified separately as a **target runtime** artifact. AmigaOS/Kickstart 1.x compatibility is a required baseline for course game executables, alongside A500-class 68000/OCS/PAL. A 1.x runtime profile is therefore a release gate, not a later optional matrix entry. Build-host convenience must never silently become a game requirement.
+The produced executable is qualified separately as a **target runtime** artifact. The course has two primary game profiles: A500/68000/OCS/PAL with AmigaOS-Kickstart 1.x, and A1200/68020/AGA/PAL with AmigaOS-Kickstart 3.x. A500/1.x is the minimum compatibility gate for foundational material. A1200/3.x is the explicit advanced profile; using it must never silently raise the A500 baseline.
 
 ## Runtime policy
 
-Initial target qualification:
+Primary target qualification:
 
-- A500-class machine
-- Motorola 68000
-- OCS
-- PAL
-- AmigaOS/Kickstart 1.x compatibility
-- 1 MiB practical baseline
+- A500: 68000, OCS, PAL, AmigaOS/Kickstart 1.x, practical 1 MiB baseline
+- A1200: 68020, AGA, PAL, AmigaOS/Kickstart 3.x
 
 The project never redistributes Kickstart or AmigaOS. Students provide legally obtained system files where required.
