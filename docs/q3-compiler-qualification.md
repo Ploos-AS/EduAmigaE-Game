@@ -16,8 +16,11 @@ A qualified run must:
 3. invoke E-VO 3.9.4;
 4. return an executable to the host;
 5. pass the Amiga Hunk header check;
-6. execute under the A500/68000 qualification profile;
-7. print `EduAmigaE-Game Q3 PASS`.
+6. execute under the mandatory A500/68000/OCS/PAL/AmigaOS-Kickstart 1.x profile;
+7. print `EduAmigaE-Game Q3 PASS`;
+8. execute under the A1200/68020/AGA/PAL/AmigaOS-Kickstart 3.x profile as the second primary game profile.
+
+`make q3-target-a500` and `make q3-target-a1200` perform real FS-UAE execution and require Amiga-side PASS markers. `make q3-preflight-a500` and `make q3-preflight-a1200` only validate the artifact and supplied runtime inputs.
 
 The Hunk header check proves the output container format only. It does **not**
 by itself prove that generated instructions are 68000-compatible. That claim
