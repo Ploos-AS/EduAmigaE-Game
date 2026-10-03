@@ -74,3 +74,8 @@ The first M1 state model uses a 320 x 200 logical playfield. The paddle occupies
 5. target qualification runs the integrated executable on the documented profiles.
 
 Keeping these layers separate is part of the course architecture, not temporary scaffolding.
+
+
+## Behavioural scenarios
+
+`scenarios.md` defines the canonical one-tick state transitions for movement, clamping, bounce, paddle hit, miss/restart, right wall and quit. These cases are designed to become executable E-VO target tests without creating a second host-side implementation of the game rules.
