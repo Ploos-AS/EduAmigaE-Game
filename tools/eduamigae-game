@@ -30,7 +30,7 @@ Commands:
   verify FILE         verify an Amiga Hunk executable
 
 Environment:
-  EDUAMIGAE_RUNNER    command implementing the Amiga build-runner contract
+  EDUAMIGAE_RUNNER    executable implementing the Amiga build-runner contract
 EOF
     ;;
   doctor)
@@ -65,7 +65,12 @@ EOF
       exit 3
     fi
 
-    sh -c "$EDUAMIGAE_RUNNER" -- "$base"
+    test -x "$EDUAMIGAE_RUNNER" || {
+      echo "error: EDUAMIGAE_RUNNER is not executable: $EDUAMIGAE_RUNNER" >&2
+      exit 5
+    }
+
+    "$EDUAMIGAE_RUNNER" "$base"
 
     test -f "$root/build/out/$out" || {
       echo "error: expected output missing: build/out/$out" >&2
