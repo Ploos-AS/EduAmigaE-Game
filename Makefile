@@ -25,6 +25,7 @@ test-host:
 	sh tests/test-fsuae-config.sh
 	sh tests/test-build-markers.sh
 	sh tests/test-hunk-checker.sh
+	sh tests/test-target-profiles.sh
 	sh tests/test-target-1x-gate.sh
 	sh tests/test-target-runner.sh
 
