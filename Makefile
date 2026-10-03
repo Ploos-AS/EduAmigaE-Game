@@ -28,6 +28,7 @@ test-host:
 	sh tests/test-target-profiles.sh
 	sh tests/test-target-1x-gate.sh
 	sh tests/test-target-runner.sh
+	sh tests/test-m1-pong-core.sh
 
 q3:
 	EDUAMIGAE_RUNNER=runtime/fs-uae/run-build.sh tools/eduamigae-game build tests/fixtures/q3-smoke.e
