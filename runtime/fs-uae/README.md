@@ -1,42 +1,76 @@
-# FS-UAE student runner
+# FS-UAE runtime
 
-This is the first reference implementation of the Amiga build-runner contract.
+FS-UAE is the reference runtime for building and qualifying EduAmigaE-Game programs.
 
-## Principle
+The repository supplies configuration and automation only. It does **not** ship Kickstart ROMs, AmigaOS/Workbench files, or other proprietary Amiga system material. Users provide their own legally obtained runtime files.
 
-The repository supplies configuration and scripts only.
+## Build runner
 
-It does **not** supply:
+`runtime/fs-uae/run-build.sh SOURCE.e` runs E-VO inside an Amiga environment. The build host may use AmigaOS 2.04+ for reliable automation; this is a tooling environment, not a game compatibility claim.
 
-- Kickstart ROM images;
-- Workbench/AmigaOS disks or files;
-- other copyrighted Commodore/Amiga system material.
+Generated volumes are:
 
-Students point the runner at their own legally obtained files.
+- `BOOT:` — generated unattended Startup-Sequence;
+- `SYSTEM:` — user-supplied AmigaOS tree;
+- `SRC:` — staged E source;
+- `OUT:` — compiler output and completion markers;
+- `RUNTIME:` — Amiga-side build scripts;
+- `EVO:` — pinned E-VO distribution.
 
-## Baseline profile
+A successful build must return an Amiga Hunk executable to `build/out`. The host then verifies the Hunk container format.
 
-- A500
-- 68000
-- OCS
-- PAL
-- 1 MiB practical course target
+## Primary game target profiles
 
-Two host directories are exposed to the Amiga:
+Built programs are qualified separately from the compiler host.
 
-- `build/src` -> source staging
-- `build/out` -> build output
+### A500 / 1.x
 
-E-VO is installed/staged separately as described by the course toolchain setup.
+The foundational compatibility gate is:
 
-## Contract
+- A500;
+- 68000;
+- OCS;
+- PAL;
+- AmigaOS/Kickstart 1.x;
+- 1 MiB practical baseline (512 KiB Chip + 512 KiB Slow).
 
-The host invokes `runtime/fs-uae/run-build.sh SOURCE.e`.
+### A1200 / 3.x
 
-The runtime must arrange for the Amiga side to execute:
+The advanced game profile is:
 
-```text
-execute EDU:runtime/build.evo SOURCE.e
+- A1200;
+- 68020;
+- AGA;
+- PAL;
+- AmigaOS/Kickstart 3.x;
+- 2 MiB Chip baseline.
+
+A1200-only lessons and features must be explicit and must not silently raise the A500 baseline.
+
+## Target execution contract
+
+`runtime/fs-uae/run-target.sh PROFILE EXECUTABLE` performs actual target execution.
+
+Its generated volumes are:
+
+- `BOOT:` — target qualification boot;
+- `SYSTEM:` — user-supplied target AmigaOS tree;
+- `TEST:` — executable under test and `RUN.TARGET`;
+- `RESULT:` — Amiga-side `RUN.PASS` or `RUN.FAIL`.
+
+The host does not infer success merely because FS-UAE started or exited. A target run passes only when the Amiga-side harness writes `RUN.PASS`.
+
+Use:
+
+```sh
+make q3-target-a500
+make q3-target-a1200
 ```
 
-The exact filesystem/device names are deliberately isolated in the runtime layer so lessons never depend on emulator-specific paths.
+for real target execution. The corresponding `q3-preflight-*` targets validate supplied inputs and the artifact without claiming runtime qualification.
+
+## Qualification boundary
+
+Public CI tests configuration generation, Hunk validation, volume contracts, and PASS/FAIL marker semantics without proprietary ROM or OS files.
+
+Actual A500/1.x and A1200/3.x runtime PASS evidence requires legal runtime files and a real emulator run. Do not treat public host-CI success as proof of game runtime compatibility.
