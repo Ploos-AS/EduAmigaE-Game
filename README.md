@@ -13,16 +13,12 @@ EduAmigaE-Game is the game-development companion to `EduAmigaE`.
 
 The course takes a student from a first game loop to complete classic Amiga games while teaching how the machine actually works.
 
-Initial target:
+Primary game profiles:
 
-- Commodore Amiga 500
-- OCS
-- PAL
-- Motorola 68000
-- AmigaOS/Kickstart 1.x compatibility for game executables
-- 1 MiB as the practical course baseline where appropriate
+- **A500 / 68000 / OCS / PAL / AmigaOS-Kickstart 1.x** — foundational and minimum compatibility profile; 1 MiB is the practical course baseline where appropriate.
+- **A1200 / 68020 / AGA / PAL / AmigaOS-Kickstart 3.x** — advanced game profile for AGA, 020-class code and later course material.
 
-Later modules may introduce ECS, AGA and faster CPUs, but the foundational course must remain useful on a classic A500-class machine.
+The foundational course must remain useful on the A500 profile. Features that require the A1200 profile must be explicit rather than silently raising the baseline.
 
 ## Teaching approach
 
